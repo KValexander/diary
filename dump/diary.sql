@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 17 2022 г., 20:52
--- Версия сервера: 10.3.29-MariaDB
--- Версия PHP: 7.4.21
+-- Время создания: Янв 18 2022 г., 14:15
+-- Версия сервера: 10.3.22-MariaDB
+-- Версия PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,8 @@ CREATE TABLE `cells` (
   `hour_id` int(11) NOT NULL,
   `date_id` int(11) NOT NULL,
   `label_id` int(11) NOT NULL,
+  `background` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -50,6 +52,7 @@ DROP TABLE IF EXISTS `dates`;
 CREATE TABLE `dates` (
   `date_id` int(11) NOT NULL,
   `date` date NOT NULL,
+  `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -64,6 +67,7 @@ DROP TABLE IF EXISTS `hours`;
 CREATE TABLE `hours` (
   `hour_id` int(11) NOT NULL,
   `hour` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -79,6 +83,7 @@ CREATE TABLE `labels` (
   `label_id` int(11) NOT NULL,
   `label` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -93,6 +98,7 @@ DROP TABLE IF EXISTS `profiles`;
 CREATE TABLE `profiles` (
   `profile_id` int(11) NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

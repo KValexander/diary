@@ -4,6 +4,7 @@ let menu = {
 		document.querySelector(".bar .left .point").addEventListener("click", menu.show);
 		menu.main = document.querySelector("#menu .main");
 		menu.side = document.querySelector("#menu .side");
+		menu.close = document.querySelector("#menu .side #close");
 		document.querySelector("#menu #hide").onclick = menu.hide;
 	},
 	// Show and Hide main menu
@@ -26,6 +27,7 @@ let menu = {
 	// Show and Hide side menu
 	show_side: function(id) {
 		document.querySelector("#menu .side #"+id).style.display = "block";
+		menu.close.onclick = () => menu.hide_side(id);
 		mask.onclick = () => menu.hide_side(id);
 		menu.side.style.width = "600px";
 		menu.side.style.padding = "20px";

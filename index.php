@@ -537,16 +537,124 @@
 		<!-- Left -->
 		<div class="main">
 			<div class="point button" id="hide">Hide</div>
-			<div onclick="menu.show_side('profiles')" class="point button" id="profiles">Profiles</div>
-			<div onclick="menu.show_side('directories')" class="point button" id="directories">Directories</div>
+			<fieldset>
+				<legend>Labels</legend>
+				<ul>
+					<li>Label - description</li>
+					<li>Label - description description</li>
+					<li>Label - description description description</li>
+					<li>Label - description description description description</li>
+					<li>Label - description description description description description</li>
+				</ul>
+			</fieldset><br>
+			<div onclick="menu.show_side('labels')" class="point button">Labels</div>
+			<div onclick="menu.show_side('profiles')" class="point button">Profiles</div>
+			<div onclick="menu.show_side('directories')" class="point button">Directories</div>
 		</div>
 		<!-- Right -->
 		<div class="side">
-			<div id="profiles">
-				<h2>Profile name</h2>
+			<div class="point button" id="close">Close</div><br>
+			<!-- Labels -->
+			<div id="labels">
+				<!-- Add label -->
+				<fieldset>
+					<legend>Labels</legend>
+					<h3>Add label</h3><hr>
+					<div class="part">
+						<input type="text" placeholder="Label">
+						<button>Add</button>
+					</div>
+					<textarea placeholder="Description"></textarea>
+				</fieldset>
+				<!-- Actions -->
+				<fieldset>
+					<legend>Actions</legend>
+					<select>
+						<option disabled selected>Labels</option>
+					</select>
+					<div class="part row">
+						<button>Update</button>
+						<button>Delete</button>
+					</div>
+				</fieldset>
 			</div>
+			<!-- Profiles -->
+			<div id="profiles">
+				<fieldset>
+					<legend>Profiles</legend>
+					<!-- Select profile -->
+					<h3>Current profile: Guest</h3><hr>
+					<div class="part">
+						<select>
+							<option selected disabled>Profiles</option>
+						</select>
+						<button>Select</button>
+					</div><br>
+					<!-- Add profile -->
+					<h3>Add profile</h3>
+					<hr>
+					<div class="part">
+						<input type="text" placeholder="Profile name">
+						<button>Add</button>
+					</div>
+				</fieldset>
+				<!-- Actions -->
+				<fieldset>
+					<legend>Actions</legend>
+					<select>
+						<option disabled selected>Profiles</option>
+					</select>
+					<div class="part row">
+						<button>Update</button>
+						<button>Delete</button>
+					</div>
+				</fieldset>
+			</div>
+			<!-- Directories -->
 			<div id="directories">
-				<h2>Directories</h2>
+				<!-- Hours -->
+				<fieldset>
+					<legend>Hours</legend>
+					<!-- Add hour -->
+					<h3>Add hour</h3>
+					<hr>
+					<div class="part">
+						<input type="text" placeholder="Hour">
+						<button>Add</button>
+					</div><br>
+					<!-- Actions -->
+					<h3>Actions</h3>
+					<hr>
+					<select>
+						<option disabled selected>Hours</option>
+					</select>
+					<div class="part row">
+						<button>Update</button>
+						<button>Delete</button>
+					</div>
+				</fieldset><br>
+
+				<!-- Dates -->
+				<fieldset>
+					<legend>Dates</legend>
+					<!-- Add date -->
+					<h3>Add date</h3>
+					<hr>
+					<div class="part">
+						<input type="datetime-local">
+						<button>Add</button>
+					</div><br>
+					<!-- Actions -->
+					<h3>Actions</h3>
+					<hr>
+					<select>
+						<option disabled selected>Dates</option>
+					</select>
+					<div class="part row">
+						<button>Update</button>
+						<button>Delete</button>
+					</div>
+				</fieldset>
 			</div>
 		</div>
 	</div>
