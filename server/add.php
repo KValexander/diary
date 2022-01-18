@@ -17,7 +17,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 				$connect->real_escape_string($description));
 		break;
 		case "hour":
-			$table = "tables";
+			$table = "hours";
 			$hour = htmlentities(trim(request("hour")));
 			$sql = sprintf("INSERT INTO `%s`(`hour`) VALUES('%s')", $table, $connect->real_escape_string($hour));
 		break;
@@ -29,5 +29,5 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 		default: return response(400); break;
 	}
 	if(!$connect->query($sql)) return response(400, $connect->error);
-	else return response(201, $connect->query("SELECT * FROM `$table`")->fetch_assoc());
+	else return response(201, $connect->query("SELECT * FROM `$table`")->fetch_all());
 } else return response(400);

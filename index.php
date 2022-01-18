@@ -6,6 +6,7 @@
 	<title>Diary</title>
 	<link rel="stylesheet" href="style.css">
 	<script src="scripts/script.js"></script>
+	<script src="scripts/popup.js"></script>
 	<script src="scripts/menu.js"></script>
 </head>
 <body>
@@ -560,11 +561,13 @@
 				<fieldset>
 					<legend>Labels</legend>
 					<h3>Add label</h3><hr>
-					<div class="part">
-						<input type="text" placeholder="Label">
-						<button>Add</button>
-					</div>
-					<textarea placeholder="Description"></textarea>
+					<form onsubmit="return labels.add()" id="add_label">
+						<div class="part">
+							<input type="text" placeholder="Label" pattern="[\w]{1,8}" required>
+							<button>Add</button>
+						</div>
+						<textarea placeholder="Description" pattern="[\w]{1,128}"></textarea>
+					</form>
 				</fieldset>
 				<!-- Actions -->
 				<fieldset>
@@ -591,12 +594,13 @@
 						<button>Select</button>
 					</div><br>
 					<!-- Add profile -->
-					<h3>Add profile</h3>
-					<hr>
-					<div class="part">
-						<input type="text" placeholder="Profile name">
-						<button>Add</button>
-					</div>
+					<h3>Add profile</h3><hr>
+					<form onsubmit="return profiles.add()" id="add_profile">
+						<div class="part">
+							<input type="text" placeholder="Profile name" pattern="[\w]{1,64}" required>
+							<button>Add</button>
+						</div>
+					</form>
 				</fieldset>
 				<!-- Actions -->
 				<fieldset>
@@ -616,15 +620,15 @@
 				<fieldset>
 					<legend>Hours</legend>
 					<!-- Add hour -->
-					<h3>Add hour</h3>
-					<hr>
-					<div class="part">
-						<input type="text" placeholder="Hour">
-						<button>Add</button>
-					</div><br>
+					<h3>Add hour</h3><hr>
+					<form onsubmit="return hours.add()" id="add_hour">
+						<div class="part">
+							<input required pattern="[0-9]{1,2}:[0-9]{2}" type="text" placeholder="Hour">
+							<button>Add</button>
+						</div>
+					</form><br>
 					<!-- Actions -->
-					<h3>Actions</h3>
-					<hr>
+					<h3>Actions</h3><hr>
 					<select>
 						<option disabled selected>Hours</option>
 					</select>
@@ -638,15 +642,15 @@
 				<fieldset>
 					<legend>Dates</legend>
 					<!-- Add date -->
-					<h3>Add date</h3>
-					<hr>
-					<div class="part">
-						<input type="datetime-local">
-						<button>Add</button>
-					</div><br>
+					<h3>Add date</h3><hr>
+					<form onsubmit="return dates.add()" id="add_date">
+						<div class="part">
+							<input required type="date">
+							<button>Add</button>
+						</div>
+					</form><br>
 					<!-- Actions -->
-					<h3>Actions</h3>
-					<hr>
+					<h3>Actions</h3><hr>
 					<select>
 						<option disabled selected>Dates</option>
 					</select>
@@ -658,6 +662,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<!-- Popup -->
+	<div id="popup"><div id="message"></div></div>
 </body>
 </html>

@@ -2,6 +2,7 @@
 include "connect.php";
 include "helpers.php";
 
+// Routes
 $routes = [
 	"/add" => "add.php",
 ];

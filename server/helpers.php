@@ -12,7 +12,7 @@
 
 	// Get json data
 	function request($key=NULL) {
-		if($_SERVER["CONTENT_TYPE"] ==  'application/json') {
+		if($_SERVER["CONTENT_TYPE"] == 'application/json') {
 			$data = file_get_contents('php://input');
 			$array = json_decode($data, true);
 		} else $array = array_merge($_REQUEST, $_FILES);

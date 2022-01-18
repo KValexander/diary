@@ -267,3 +267,22 @@ div#menu div.side {
 
 div#menu div.side > div { display: none; }
 div#menu div.side > div#close { display: flex; }
+
+/*Popup*/
+div#popup div#message {
+	height: 0;
+	font-size: 20pt;
+	top: 15px;
+	left: 15px;
+	z-index: 101;
+	display: flex;
+	transition: .2s;
+	cursor: pointer;
+	max-width: 600px;
+	overflow: hidden;
+	position: absolute;
+	border-radius: 15px;
+	background-color: white;
+	border-right-color: #eda310;
+	border-bottom-color:#eda310;
+}
