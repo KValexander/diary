@@ -29,5 +29,5 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 		default: return response(400); break;
 	}
 	if(!$connect->query($sql)) return response(400, $connect->error);
-	else return response(201, $connect->query("SELECT * FROM `$table`")->fetch_all());
+	return response(201);
 } else return response(400);

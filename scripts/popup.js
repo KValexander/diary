@@ -1,5 +1,6 @@
 // Popup
 let popup = {
+	timer: null,
 	init: function() {
 		popup.message = document.getElementById("message");
 		popup.message.onclick = popup.hide_message;
@@ -13,7 +14,8 @@ let popup = {
 		height = popup.message.scrollHeight + 40;
 		popup.message.style.height = `${height}px`;
 
-		setTimeout(popup.hide_message, time);
+		clearTimeout(popup.timer);
+		popup.timer = setTimeout(popup.hide_message, time);
 	},
 	// Hide popup
 	hide_message: function() {
