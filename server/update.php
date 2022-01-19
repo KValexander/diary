@@ -61,7 +61,7 @@ foreach($data["dates"] as $val) {
 for($i = 0; $i < count($data["dates"]); $i++) {
 	$out["cells"] .= '<div class="row">';
 	for($j = 0; $j < count($data["hours"]); $j++)
-		$out["cells"] .= '<div class="cell"></div>';
+		$out["cells"] .= '<div class="cell" id="d'.$data["dates"][$i][0].'-h'.$data["hours"][$j][0].'"></div>';
 	$out["cells"] .= '</div>';
 }
 

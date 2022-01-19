@@ -1,7 +1,13 @@
 let mask;
 document.addEventListener("DOMContentLoaded", function() {
 	mask = document.getElementById("mask");
-	script.update();
+	// INIT
+	script.update(() => {
+		labels.init();
+		profiles.init();
+		hours.init();
+		dates.init();
+	});
 });
 
 // Script
@@ -23,9 +29,9 @@ let script = {
 		};
 		script.xhr.send(data);
 	},
-	update: function() {
+	update: function(callback=null) {
 		script.get(data => {
-			status = data.status;
+			let status = data.status, lb = "";
 			data = data.data;
 
 			// Current profile
@@ -48,30 +54,38 @@ let script = {
 			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Hours</option>`);
 			select.forEach(elem => elem.innerHTML += data.select_out.hours);
 			
+			data.data.labels.forEach(label => lb += `<li>${label[1]}</li>`);
 			// Out data
-			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "";
+			document.querySelector("#lb ul").innerHTML = (data.out.labels) ? lb : "";
+			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
 			document.getElementById("out_dates").innerHTML = (data.out.dates) ? data.out.dates : "";
 			document.getElementById("out_hours").innerHTML = (data.out.hours) ? data.out.hours : "";
 			document.getElementById("out_cells").innerHTML = (data.out.cells) ? data.out.cells : "";
+
+
+			// Callback if necessary
+			if(callback != null) callback();
+			cells.init();
 		}, "/update");
 	},
 };
 
 // Labels
 let labels = {
+	init: function() {
+		labels.form = document.forms["labels_form"];
+		labels.head = document.getElementById("head_labels_form");
+	},
 	// Add label
-	add: function(event) {
-		event.preventDefault();
-
-		let form = event.target;
+	add: function() {
 		let json = JSON.stringify({
-			"label": form.elements[0].value,
-			"description": form.elements[2].value,
+			"label": labels.form.elements[0].value,
+			"description": labels.form.elements[2].value,
 		});
 		script.post(data => {
 			popup.show_message("Label added");
-			form.elements[0].value = "";
-			form.elements[2].value = "";
+			labels.form.elements[0].value = "";
+			labels.form.elements[2].value = "";
 			script.update();
 		}, "/add?t=label", json);
 		return false;
@@ -95,12 +109,55 @@ let labels = {
 			}
 		}
 
+		// Update
+		else if(type == "update") {
+			labels.form.onsubmit = () => { return labels.update(labels.form) };
+			
+			script.get(data => {
+				labels.form.elements[0].value = data.data.label;
+				labels.form.elements[1].value = data.data.label_id;
+				labels.form.elements[2].value = data.data.description;
+			}, "/get?t=label&id="+id);
+
+			labels.head.innerHTML = "Update label";
+			labels.form.elements[1].innerHTML = "Update";
+		}
+
 		return false;
-	}
+	},
+	// Update label
+	update: function(form) {
+		let json = JSON.stringify({
+			"id": form.elements[1].value,
+			"label": form.elements[0].value,
+			"description": form.elements[2].value,
+		});
+
+		script.post(data => {
+			popup.show_message("Label updated");
+
+			form.onsubmit = () => { return labels.add() };
+
+			form.elements[0].value = "";
+			form.elements[1].value = "";
+			form.elements[2].value = "";
+
+			labels.head.innerHTML = "Add label";
+			form.elements[1].innerHTML = "Add";
+
+			script.update();
+		}, "/change?t=label", json);
+
+		return false;
+	},
 };
 
 // Profiles
 let profiles = {
+	init: function() {
+		profiles.form = document.forms["profiles_form"];
+		profiles.head = document.getElementById("head_profiles_form");
+	},
 	// Select current profile
 	select: function(event) {
 		event.preventDefault();
@@ -119,15 +176,12 @@ let profiles = {
 		return false;
 	},
 	// Add profile
-	add: function(event) {
-		event.preventDefault();
-
-		let form = event.target;
-		let json = JSON.stringify({"name": form.elements[0].value});
+	add: function() {
+		let json = JSON.stringify({"name": profiles.form.elements[0].value});
 
 		script.post(data => {
 			popup.show_message("Profile added");
-			form.elements[0].value = "";
+			profiles.form.elements[0].value = "";
 			script.update();
 		}, "/add?t=profile", json);
 
@@ -152,22 +206,59 @@ let profiles = {
 			}
 		}
 
+		// Update
+		else if(type == "update") {
+			profiles.form.onsubmit = () => { return profiles.update(profiles.form) };
+			
+			script.get(data => {
+				profiles.form.elements[0].value = data.data.name;
+				profiles.form.elements[1].value = data.data.profile_id;
+			}, "/get?t=profile&id="+id);
+
+			profiles.head.innerHTML = "Update profile";
+			profiles.form.elements[1].innerHTML = "Update";
+		}
+
+		return false;
+	},
+	// Update profile
+	update: function(form) {
+		let json = JSON.stringify({
+			"id": form.elements[1].value,
+			"name": form.elements[0].value
+		});
+
+		script.post(data => {
+			popup.show_message("Profile updated");
+
+			form.onsubmit = () => { return profiles.add() };
+
+			form.elements[0].value = "";
+			form.elements[1].value = "";
+
+			profiles.head.innerHTML = "Add profile";
+			form.elements[1].innerHTML = "Add";
+
+			script.update();
+		}, "/change?t=profile", json);
+
 		return false;
 	},
 };
 
 // Hours
 let hours = {
+	init: function() {
+		hours.form = document.forms["hours_form"];
+		hours.head = document.getElementById("head_hours_form");
+	},
 	// Add hour
-	add: function(event) {
-		event.preventDefault();
-
-		let form = event.target;
-		let json = JSON.stringify({"hour": form.elements[0].value});
+	add: function() {
+		let json = JSON.stringify({"hour": hours.form.elements[0].value});
 
 		script.post(data => {
 			popup.show_message("Hour added");
-			form.elements[0].value = "";
+			hours.form.elements[0].value = "";
 			script.update();
 		}, "/add?t=hour", json);
 
@@ -192,22 +283,59 @@ let hours = {
 			}
 		}
 
+		// Update
+		else if(type == "update") {
+			hours.form.onsubmit = () => { return hours.update(hours.form) };
+			
+			script.get(data => {
+				hours.form.elements[0].value = data.data.hour;
+				hours.form.elements[1].value = data.data.hour_id;
+			}, "/get?t=hour&id="+id);
+
+			hours.head.innerHTML = "Update hour";
+			hours.form.elements[1].innerHTML = "Update";
+		}
+
+		return false;
+	},
+	// Update hour
+	update: function(form) {
+		let json = JSON.stringify({
+			"id": form.elements[1].value,
+			"hour": form.elements[0].value
+		});
+
+		script.post(data => {
+			popup.show_message("Hour updated");
+
+			form.onsubmit = () => { return hours.add() };
+
+			form.elements[0].value = "";
+			form.elements[1].value = "";
+
+			hours.head.innerHTML = "Add hour";
+			form.elements[1].innerHTML = "Add";
+
+			script.update();
+		}, "/change?t=hour", json);
+
 		return false;
 	},
 };
 
 // Dates
 let dates = {
+	init: function() {
+		dates.form = document.forms["dates_form"];
+		dates.head = document.getElementById("head_dates_form");
+	},
 	// Add date
-	add: function(event) {
-		event.preventDefault();
-
-		let form = event.target;
-		let json = JSON.stringify({"date": form.elements[0].value});
+	add: function() {
+		let json = JSON.stringify({"date": dates.form.elements[0].value});
 
 		script.post(data => {
 			popup.show_message("Date added");
-			form.elements[0].value = "";
+			dates.form.elements[0].value = "";
 			script.update();
 		}, "/add?t=date", json);
 
@@ -231,6 +359,42 @@ let dates = {
 				}, "/delete?t=date&id="+id);
 			}
 		}
+
+		// Update
+		else if(type == "update") {
+			dates.form.onsubmit = () => { return dates.update(dates.form) };
+			
+			script.get(data => {
+				dates.form.elements[0].value = data.data.date;
+				dates.form.elements[1].value = data.data.date_id;
+			}, "/get?t=date&id="+id);
+
+			dates.head.innerHTML = "Update date";
+			dates.form.elements[1].innerHTML = "Update";
+		}
+
+		return false;
+	},
+	// Update date
+	update: function(form) {
+		let json = JSON.stringify({
+			"id": form.elements[1].value,
+			"date": form.elements[0].value
+		});
+
+		script.post(data => {
+			popup.show_message("Date updated");
+
+			form.onsubmit = () => { return dates.add() };
+
+			form.elements[0].value = "";
+			form.elements[1].value = "";
+
+			dates.head.innerHTML = "Add date";
+			form.elements[1].innerHTML = "Add";
+
+			script.update();
+		}, "/change?t=date", json);
 
 		return false;
 	},

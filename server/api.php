@@ -5,9 +5,11 @@ include "helpers.php";
 
 // Routes
 $routes = [
+	"/get" => "get.php",
 	"/add" => "add.php",
 	"/select" => "select.php",
 	"/update" => "update.php",
+	"/change" => "change.php",
 	"/delete" => "delete.php",
 ];
 

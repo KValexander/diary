@@ -9,6 +9,7 @@
 		dark - #333
 		yellows - #eda310, #fcc029
 */
+
 /*Scrollbar*/
 *::-webkit-scrollbar {
 	width: 10px;
@@ -273,7 +274,7 @@ div#menu div.side > div { display: none; }
 div#menu div.side > div#close { display: flex; }
 
 /*Popup*/
-div#popup div#message {
+div#popup div#message, div#popup div#lb {
 	height: 0;
 	font-size: 20pt;
 	top: 15px;
@@ -289,4 +290,20 @@ div#popup div#message {
 	background-color: white;
 	border-right-color: #eda310;
 	border-bottom-color:#eda310;
+}
+
+div#popup div#lb {
+	z-index: 98;
+	cursor: auto;
+	background-color: rgba(237,163,16, 0.7);
+	border-radius: 5px;
+	font-size: 16pt;
+}
+
+div#popup div#lb ul {
+	cursor: pointer;
+}
+
+div#popup div#lb ul li:hover {
+	text-decoration: underline;
 }

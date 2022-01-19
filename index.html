@@ -8,6 +8,7 @@
 	<script src="scripts/script.js"></script>
 	<script src="scripts/popup.js"></script>
 	<script src="scripts/menu.js"></script>
+	<script src="scripts/cells.js"></script>
 </head>
 <body>
 
@@ -17,21 +18,15 @@
 			<div class="left">
 				<div class="cell"><div class="point">Menu</div></div>
 				<!-- Out dates -->
-				<div id="out_dates">
-					<?= $out["dates"] ?>
-				</div>
+				<div id="out_dates"></div>
 				<!-- End out dates -->
 			</div>
 			<div class="right">
 				<!-- Out hours -->
-				<div class="row" id="out_hours">
-					<?= $out["hours"] ?>
-				</div>
+				<div class="row" id="out_hours"></div>
 				<!-- End out hours -->
 				<!-- Out cells -->
-				<div class="bottom" id="out_cells">
-					<?= $out["cells"] ?>
-				</div>
+				<div class="bottom" id="out_cells"></div>
 				<!-- End out cells -->
 			</div>
 		</div>
@@ -51,7 +46,7 @@
 			<!-- Out labels -->
 			<fieldset>
 				<legend>Labels</legend>
-				<ul id="out_labels"><?= $out["labels"] ?></ul>
+				<ul id="out_labels"></ul>
 			</fieldset><br>
 			<!-- End out labels -->
 			<div onclick="menu.show_side('labels')" class="point button">Labels</div>
@@ -68,8 +63,8 @@
 				<!-- Add label -->
 				<fieldset>
 					<legend>Labels</legend>
-					<h3>Add label</h3><hr>
-					<form onsubmit="return labels.add(event)">
+					<h3 id="head_labels_form">Add label</h3><hr>
+					<form onsubmit="return labels.add()" id="labels_form">
 						<div class="part">
 							<input type="text" placeholder="Label" pattern="[\w]{1,8}" required>
 							<button>Add</button>
@@ -106,8 +101,8 @@
 					</form><br>
 					<!-- End select profile -->
 					<!-- Add profile -->
-					<h3>Add profile</h3><hr>
-					<form onsubmit="return profiles.add(event)">
+					<h3 id="head_profiles_form">Add profile</h3><hr>
+					<form onsubmit="return profiles.add()" id="profiles_form">
 						<div class="part">
 							<input type="text" placeholder="Profile name" pattern="[\w]{1,64}" required>
 							<button>Add</button>
@@ -135,8 +130,8 @@
 				<fieldset>
 					<legend>Hours</legend>
 					<!-- Add hour -->
-					<h3>Add hour</h3><hr>
-					<form onsubmit="return hours.add(event)">
+					<h3 id="head_hours_form">Add hour</h3><hr>
+					<form onsubmit="return hours.add()" id="hours_form">
 						<div class="part">
 							<input required pattern="[0-9]{2}:[0-9]{2}" type="text" placeholder="Hour">
 							<button>Add</button>
@@ -160,8 +155,8 @@
 				<fieldset>
 					<legend>Dates</legend>
 					<!-- Add date -->
-					<h3>Add date</h3><hr>
-					<form onsubmit="return dates.add(event)">
+					<h3 id="head_dates_form">Add date</h3><hr>
+					<form onsubmit="return dates.add()" id="dates_form">
 						<div class="part">
 							<input required type="date">
 							<button>Add</button>
@@ -189,7 +184,10 @@
 	<!-- End menu -->
 
 	<!-- Popup -->
-	<div id="popup"><div id="message"></div></div>
+	<div id="popup">
+		<div id="message"></div>
+		<div id="lb"><ul></ul></div>
+	</div>
 	<!-- End popup -->
 </body>
 </html>
