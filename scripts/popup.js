@@ -47,7 +47,7 @@ let popup = {
 		popup.lb.style.top = `${top}px`;
 		popup.lb.style.padding = `20px`;
 		popup.lb.style.border = "solid 1px black";
-		popup.lb.style.width = `${bound.width}px`;
+		// popup.lb.style.width = `${bound.width}px`;
 		if(popup.lb.clientHeight == 0)
 			popup.lb.style.height = `${popup.lb.scrollHeight + 40}px`;
 	},

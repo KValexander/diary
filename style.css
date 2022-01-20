@@ -185,6 +185,7 @@ div.app div.bar {
 }
 
 div.app div.bar div.cell {
+	font-size: 14pt;
 	background-color: #fcc029;
 	border-right: solid 1px black;
 	border-bottom: solid 1px black;
@@ -212,7 +213,8 @@ div.app div.bar div.left div.cell div.cell_left {
 	text-align: right;
 	font-size: 16pt;
 }
-div.app div.bar div.left div.cell div.cell_right div{
+div.app div.bar div.left div.cell div.cell_right div {
+	font-size: 11pt;
 	margin: 5px;
 }
 
@@ -297,7 +299,7 @@ div#popup div#lb {
 	cursor: auto;
 	background-color: rgba(237,163,16, 0.7);
 	border-radius: 5px;
-	font-size: 16pt;
+	font-size: 1.3em;
 }
 
 div#popup div#lb ul {

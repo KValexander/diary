@@ -1,18 +1,23 @@
 let mask;
 document.addEventListener("DOMContentLoaded", function() {
 	mask = document.getElementById("mask");
-	// INIT
-	script.update(() => {
-		labels.init();
-		profiles.init();
-		hours.init();
-		dates.init();
-	});
+	// Check date
+	script.get(data => {
+		if(data.status == 201) popup.show_message("Today's date added", 5000)
+		// INIT
+		script.refresh(() => {
+			labels.init();
+			profiles.init();
+			hours.init();
+			dates.init();
+		});
+	}, "/check");
 });
 
 // Script
 let script = {
 	xhr: new XMLHttpRequest(),
+	// Get request
 	get: function(callback, url, data=null) {
 		script.xhr.open("GET", url, true);
 		script.xhr.onreadystatechange = function() {
@@ -20,6 +25,7 @@ let script = {
 			callback(JSON.parse(script.xhr.responseText));
 		}; script.xhr.send(data);
 	},
+	// Post request
 	post: function(callback, url, data=null) {
 		script.xhr.open("POST", url, true);
 		script.xhr.setRequestHeader("Content-Type", "application/json");
@@ -29,7 +35,8 @@ let script = {
 		};
 		script.xhr.send(data);
 	},
-	update: function(callback=null) {
+	// Refreshing page data
+	refresh: function(callback=null) {
 		script.get(data => {
 			let status = data.status, lb = "";
 			data = data.data;
@@ -54,7 +61,7 @@ let script = {
 			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Hours</option>`);
 			select.forEach(elem => elem.innerHTML += data.select_out.hours);
 			
-			data.data.labels.forEach(label => lb += `<li>${label[1]}</li>`);
+			data.data.labels.forEach(label => lb += `<li id="l${label[0]}-">${label[1]}</li>`);
 			// Out data
 			document.querySelector("#lb ul").innerHTML = (data.out.labels) ? lb : "";
 			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
@@ -62,11 +69,10 @@ let script = {
 			document.getElementById("out_hours").innerHTML = (data.out.hours) ? data.out.hours : "";
 			document.getElementById("out_cells").innerHTML = (data.out.cells) ? data.out.cells : "";
 
-
 			// Callback if necessary
 			if(callback != null) callback();
 			cells.init();
-		}, "/update");
+		}, "/refresh");
 	},
 };
 
@@ -86,7 +92,7 @@ let labels = {
 			popup.show_message("Label added");
 			labels.form.elements[0].value = "";
 			labels.form.elements[2].value = "";
-			script.update();
+			script.refresh();
 		}, "/add?t=label", json);
 		return false;
 	},
@@ -104,7 +110,7 @@ let labels = {
 			if(check) {
 				script.get(data => {
 					popup.show_message("Label deleted");
-					script.update();
+					script.refresh();
 				}, "/delete?t=label&id="+id);
 			}
 		}
@@ -145,8 +151,8 @@ let labels = {
 			labels.head.innerHTML = "Add label";
 			form.elements[1].innerHTML = "Add";
 
-			script.update();
-		}, "/change?t=label", json);
+			script.refresh();
+		}, "/update?t=label", json);
 
 		return false;
 	},
@@ -182,7 +188,7 @@ let profiles = {
 		script.post(data => {
 			popup.show_message("Profile added");
 			profiles.form.elements[0].value = "";
-			script.update();
+			script.refresh();
 		}, "/add?t=profile", json);
 
 		return false;
@@ -201,7 +207,7 @@ let profiles = {
 			if(check) {
 				script.get(data => {
 					popup.show_message("Profile deleted");
-					script.update();
+					script.refresh();
 				}, "/delete?t=profile&id="+id);
 			}
 		}
@@ -239,8 +245,8 @@ let profiles = {
 			profiles.head.innerHTML = "Add profile";
 			form.elements[1].innerHTML = "Add";
 
-			script.update();
-		}, "/change?t=profile", json);
+			script.refresh();
+		}, "/update?t=profile", json);
 
 		return false;
 	},
@@ -259,7 +265,7 @@ let hours = {
 		script.post(data => {
 			popup.show_message("Hour added");
 			hours.form.elements[0].value = "";
-			script.update();
+			script.refresh();
 		}, "/add?t=hour", json);
 
 		return false;
@@ -278,7 +284,7 @@ let hours = {
 			if(check) {
 				script.get(data => {
 					popup.show_message("Hour deleted");
-					script.update();
+					script.refresh();
 				}, "/delete?t=hour&id="+id);
 			}
 		}
@@ -316,8 +322,8 @@ let hours = {
 			hours.head.innerHTML = "Add hour";
 			form.elements[1].innerHTML = "Add";
 
-			script.update();
-		}, "/change?t=hour", json);
+			script.refresh();
+		}, "/update?t=hour", json);
 
 		return false;
 	},
@@ -336,7 +342,7 @@ let dates = {
 		script.post(data => {
 			popup.show_message("Date added");
 			dates.form.elements[0].value = "";
-			script.update();
+			script.refresh();
 		}, "/add?t=date", json);
 
 		return false;
@@ -355,7 +361,7 @@ let dates = {
 			if(check) {
 				script.get(data => {
 					popup.show_message("Date deleted");
-					script.update();
+					script.refresh();
 				}, "/delete?t=date&id="+id);
 			}
 		}
@@ -393,8 +399,8 @@ let dates = {
 			dates.head.innerHTML = "Add date";
 			form.elements[1].innerHTML = "Add";
 
-			script.update();
-		}, "/change?t=date", json);
+			script.refresh();
+		}, "/update?t=date", json);
 
 		return false;
 	},
