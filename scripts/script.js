@@ -62,12 +62,16 @@ let script = {
 			select.forEach(elem => elem.innerHTML += data.select_out.hours);
 			
 			data.data.labels.forEach(label => lb += `<li id="l${label[0]}-">${label[1]}</li>`);
+			
 			// Out data
 			document.querySelector("#lb ul").innerHTML = (data.out.labels) ? lb : "";
 			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
 			document.getElementById("out_dates").innerHTML = (data.out.dates) ? data.out.dates : "";
 			document.getElementById("out_hours").innerHTML = (data.out.hours) ? data.out.hours : "";
 			document.getElementById("out_cells").innerHTML = (data.out.cells) ? data.out.cells : "";
+
+			// Out cells
+			data.data.cells.forEach(cell => document.getElementById(`d${cell[4]}-h${cell[3]}`).innerHTML = cell[9]);
 
 			// Callback if necessary
 			if(callback != null) callback();

@@ -12,6 +12,7 @@ $routes = [
 	"/add" 	=> "add.php", // add data
 	"/update" => "update.php", // update data
 	"/delete" => "delete.php", // delete data
+	"/cell" => "cell.php", // cells
 ];
 
 if(array_key_exists($_SERVER["REDIRECT_URL"], $routes))

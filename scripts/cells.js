@@ -9,13 +9,24 @@ let cells = {
 				document.querySelectorAll("#out_cells .cell").forEach(cell => {
 					let cell_size = cell.getBoundingClientRect();
 					if(parseInt(cell_size.x) == size.x && parseInt(cell_size.y + cell_size.height) == size.y)
-						return cells.add(elem.id + cell.id);
+						return cells.add(elem.id + cell.id + "-" + elem.innerText);
 				});
 			});
 		});
 	},
 	// Add cell
 	add: function(id) {
-		console.log(id);
+		id = id.split("-");
+		json = JSON.stringify({
+			"label_id":  id[0].slice(1),
+			"date_id":  id[1].slice(1),
+			"hour_id":  id[2].slice(1),
+		});
+		script.post(data => {
+			if(data.status == 200)popup.show_message("Cell is updated");
+			else if(data.status == 201)popup.show_message("Cell is added");
+			document.getElementById(id[1]+"-"+id[2]).innerHTML = id[3];
+			popup.hide_lb();
+		}, "/cell?t=add", json);
 	},
 };

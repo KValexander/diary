@@ -3,13 +3,20 @@
 if(isset($_SESSION["profile_id"])) {
 	$sql = sprintf("SELECT EXISTS(SELECT * FROM `profiles` WHERE `profile_id`='%s')", $_SESSION["profile_id"]);
 	$result = $connect->query($sql)->fetch_array()[0];
-	if($result == "1") $current_profile = $_SESSION["profile_name"];
+	if($result == "1") {
+		$profile_id = $_SESSION["profile_id"];
+		$current_profile = $_SESSION["profile_name"];
+	}
 	else {
 		unset($_SESSION["profile_id"]);
 		unset($_SESSION["profile_name"]);
-		$current_profile = "Guest";	
+		$profile_id = 0;
+		$current_profile = "Guest";
 	}
-} else $current_profile = "Guest";
+} else {
+	$profile_id = 0;
+	$current_profile = "Guest";
+}
 
 // SQL queries
 $sql = [
@@ -17,7 +24,7 @@ $sql = [
 	"labels" => "SELECT `label_id`, `label`, `description` FROM `labels` ORDER BY `label_id` ASC",
 	"hours" => "SELECT `hour_id`, `hour` FROM `hours` ORDER BY `hour` ASC",
 	"dates" => "SELECT `date_id`, `date` FROM `dates` ORDER BY `date` DESC",
-];
+]; $sql_cells = sprintf("SELECT * FROM `cells` INNER JOIN `labels` USING(`label_id`) WHERE `profile_id`='%s'", $profile_id);
 
 // Arrays
 $data = [];
@@ -36,6 +43,7 @@ foreach($data as $key => $value)
 				sprintf('<option value="%s">%s %s</option>', $val[0], $val[1], ($val[2] == "") ?
 					"" : "- ".$val[2])
 			: sprintf('<option value="%s">%s</option>', $val[0], $val[1]);
+$data["cells"] = $connect->query($sql_cells)->fetch_all();
 
 // Out labels
 foreach($data["labels"] as $val) {
