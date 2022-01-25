@@ -26,7 +26,20 @@ let cells = {
 			if(data.status == 200)popup.show_message("Cell is updated");
 			else if(data.status == 201)popup.show_message("Cell is added");
 			document.getElementById(id[1]+"-"+id[2]).innerHTML = id[3];
+			document.getElementById(id[1]+"-"+id[2]).ondblclick = () => cells.delete(id[1]+"-"+id[2]);
 			popup.hide_lb();
 		}, "/cell?t=add", json);
 	},
+	// Delete cell
+	delete: function(id) {
+		id = id.split("-");
+		json = JSON.stringify({
+			"date_id":  id[0].slice(1),
+			"hour_id":  id[1].slice(1),
+		});
+		script.post(data => {
+			popup.show_message("Cell is deleted");
+			document.getElementById(id[0]+"-"+id[1]).innerHTML = "";
+		}, "/cell?t=delete", json);
+	}
 };

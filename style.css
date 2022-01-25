@@ -224,6 +224,7 @@ div.app div.bar div.right {
 
 div.app div.bar div.right div.bottom div.cell {
 	background-color: white;
+	overflow: hidden;
 	cursor:  pointer;
 	border-right: dashed 1px #333;
 	border-bottom: dashed 1px #333;

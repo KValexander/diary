@@ -7,7 +7,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 			$sql = sprintf("INSERT INTO `profiles`(`name`) VALUES('%s')", $connect->real_escape_string($name));
 		break;
 		case "label":
-			$label = htmlentities(trim(request("label")));
+			$label = trim(request("label"));
 			$description = htmlentities(trim(request("description")));
 			$sql = sprintf("INSERT INTO `labels`(`label`, `description`) VALUES('%s', '%s')",
 				$connect->real_escape_string($label),

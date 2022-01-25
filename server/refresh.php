@@ -63,10 +63,10 @@ foreach($data["dates"] as $val) {
 			<div class="cell_left">%s</div>
 			<div class="cell_right">
 				<div>%s</div>
-				<div>%s<br>%s</div>
+				<div>%s</div>
 			</div>
 		</div>
-	', $date[2], $date[1], substr($date[0], -2), substr($date[0], 2));
+	', $date[2], $date[1], substr($date[0], -2));
 }
 
 // Out cells

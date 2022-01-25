@@ -14,7 +14,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 	$result = $connect->query($sql);
 	if(!$result) die("Error: ". $connect->error);
 	if($cell_id = $result->fetch_array()[0])
-		$type = "update";
+		$type = ($type == "delete") ? "delete" : "update";
 
 	switch($type) {
 		case "add":
@@ -28,8 +28,6 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 			); $status = 200;
 		break;
 		case "delete":
-			$cell_id = request("cell_id");
-			if($cell_id == NULL) return response(400);
 			$sql = sprintf("DELETE FROM `cells` WHERE `cell_id`='%s'", $cell_id);
 			$status = 200;
 		break;

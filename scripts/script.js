@@ -71,7 +71,11 @@ let script = {
 			document.getElementById("out_cells").innerHTML = (data.out.cells) ? data.out.cells : "";
 
 			// Out cells
-			data.data.cells.forEach(cell => document.getElementById(`d${cell[4]}-h${cell[3]}`).innerHTML = cell[9]);
+			data.data.cells.forEach(cell => {
+				elem = document.getElementById(`d${cell[4]}-h${cell[3]}`);
+				elem.title = cell[10]; elem.innerHTML = cell[9];
+				elem.ondblclick = () => cells.delete(`d${cell[4]}-h${cell[3]}`);
+			});
 
 			// Callback if necessary
 			if(callback != null) callback();
@@ -176,13 +180,19 @@ let profiles = {
 		if(id == "null") return false;
 
 		script.get(data => {
-			if(data.status == 400) popup.show_message(data.data);
-			else {
-				document.getElementById("current_profile").innerHTML = data.data;
-				popup.show_message(`Profile "${data.data}" is selected`);
-			}
-		}, "/select?profile_id="+id);
+			if(data.status == 400) return popup.show_message(data.data);
+			popup.show_message(`Profile "${data.data}" is selected`);
+			script.refresh();
+		}, "/select?t=select&profile_id="+id);
 
+		return false;
+	},
+	// Deselect profile
+	deselect: function() {
+		script.get(data => {
+			popup.show_message("You are logged out");
+			script.refresh();
+		}, "/select?t=deselect");
 		return false;
 	},
 	// Add profile

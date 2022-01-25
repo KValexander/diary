@@ -9,7 +9,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 			$sql = sprintf("UPDATE `profiles` SET `name`='%s' WHERE `profile_id`='%s'", $connect->real_escape_string($name), $id);
 		break;
 		case "label":
-			$label = htmlentities(trim(request("label")));
+			$label = trim(request("label"));
 			$description = htmlentities(trim(request("description")));
 			$sql = sprintf("UPDATE `labels` SET `label`='%s', `description`='%s' WHERE `label_id`='%s'",
 				$connect->real_escape_string($label),
