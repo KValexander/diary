@@ -2,6 +2,7 @@
 session_start();
 include "connect.php";
 include "helpers.php";
+include "sql.php";
 
 // Routes
 $routes = [

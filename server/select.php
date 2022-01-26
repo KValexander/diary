@@ -7,7 +7,7 @@ if(isset($_GET["t"])) {
 		// Select
 		case "select":
 			if(isset($_GET["profile_id"])) {
-				$sql = sprintf("SELECT * FROM `profiles` WHERE `profile_id`='%s'", $profile_id);
+				$sql = sprintf($arr_sql["select_get"], $profile_id);
 				$result = $connect->query($sql);
 				if(!$result) return response(400, $connect->error);
 				if($profile = $result->fetch_assoc()) {

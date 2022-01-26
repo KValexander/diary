@@ -9,8 +9,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 	$label_id = request("label_id");
 
 	// Exists
-	$sql = sprintf("SELECT `cell_id` FROM `cells` WHERE `profile_id`='%s' AND `hour_id`='%s' AND `date_id`='%s'",
-	$profile_id, $hour_id, $date_id);
+	$sql = sprintf($arr_sql["cell_id"], $profile_id, $hour_id, $date_id);
 	$result = $connect->query($sql);
 	if(!$result) die("Error: ". $connect->error);
 	if($cell_id = $result->fetch_array()[0])
@@ -18,17 +17,15 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 
 	switch($type) {
 		case "add":
-			$sql = sprintf("INSERT INTO `cells`(`profile_id`, `hour_id`, `date_id`, `label_id`) VALUES('%s', '%s', '%s', '%s')",
-				$profile_id, $hour_id, $date_id, $label_id
-			); $status = 201;
+			$sql = sprintf($arr_sql["cell_add"], $profile_id, $hour_id, $date_id, $label_id);
+			$status = 201;
 		break;
 		case "update":
-			$sql = sprintf("UPDATE `cells` SET `profile_id`='%s',`hour_id`='%s',`date_id`='%s',`label_id`='%s' WHERE `cell_id`='%s'",
-				$profile_id, $hour_id, $date_id, $label_id, $cell_id
-			); $status = 200;
+			$sql = sprintf($arr_sql["cell_update"], $profile_id, $hour_id, $date_id, $label_id, $cell_id);
+			$status = 200;
 		break;
 		case "delete":
-			$sql = sprintf("DELETE FROM `cells` WHERE `cell_id`='%s'", $cell_id);
+			$sql = sprintf($arr_sql["cell_delete"], $cell_id);
 			$status = 200;
 		break;
 		default: return response(400); break;
@@ -36,6 +33,6 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 
 	if(!$connect->query($sql)) return response(400, $connect->error);
 
-	return response($status);
+	return response($status, $connect->query(sprintf($arr_sql["cell_label"], $label_id))->fetch_assoc());
 
 } else return response(400);

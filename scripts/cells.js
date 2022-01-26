@@ -23,10 +23,13 @@ let cells = {
 			"hour_id":  id[2].slice(1),
 		});
 		script.post(data => {
+			label = data.data;
 			if(data.status == 200)popup.show_message("Cell is updated");
 			else if(data.status == 201)popup.show_message("Cell is added");
-			document.getElementById(id[1]+"-"+id[2]).innerHTML = id[3];
-			document.getElementById(id[1]+"-"+id[2]).ondblclick = () => cells.delete(id[1]+"-"+id[2]);
+			elem = document.getElementById(id[1]+"-"+id[2]);
+			elem.innerHTML = label.label;
+			elem.title = label.description;
+			elem.ondblclick = () => cells.delete(id[1]+"-"+id[2]);
 			popup.hide_lb();
 		}, "/cell?t=add", json);
 	},
