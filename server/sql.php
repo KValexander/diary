@@ -1,6 +1,9 @@
 <?php
 	// SQL queries
 	$arr_sql = [
+		// user
+		"add_user" => "INSERT INTO `users`(`ips`, `token`) VALUES('%s', '%s')",
+		"get_user" => "SELECT * FROM `users` WHERE `%s`='%s'",
 		// refresh.php
 		"refresh_exists" => "SELECT EXISTS(SELECT * FROM `profiles` WHERE `profile_id`='%s')",
 		"refresh_profiles" => "SELECT `profile_id`, `name` FROM `profiles` ORDER BY `profile_id` ASC",

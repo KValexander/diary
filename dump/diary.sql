@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 24 2022 г., 20:14
--- Версия сервера: 10.3.29-MariaDB
--- Версия PHP: 7.4.21
+-- Время создания: Фев 10 2022 г., 13:29
+-- Версия сервера: 10.3.22-MariaDB
+-- Версия PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -77,24 +77,24 @@ CREATE TABLE `hours` (
 --
 
 INSERT INTO `hours` (`hour_id`, `hour`, `note`, `created_at`, `updated_at`) VALUES
-(1, '05:00', NULL, '2022-01-24 17:13:46', '2022-01-24 17:13:46'),
-(2, '06:00', NULL, '2022-01-24 17:13:49', '2022-01-24 17:13:49'),
-(3, '07:00', NULL, '2022-01-24 17:13:51', '2022-01-24 17:13:51'),
-(4, '08:00', NULL, '2022-01-24 17:13:52', '2022-01-24 17:13:52'),
-(5, '09:00', NULL, '2022-01-24 17:13:53', '2022-01-24 17:13:53'),
-(6, '10:00', NULL, '2022-01-24 17:13:55', '2022-01-24 17:13:55'),
-(7, '11:00', NULL, '2022-01-24 17:13:59', '2022-01-24 17:13:59'),
-(8, '12:00', NULL, '2022-01-24 17:14:01', '2022-01-24 17:14:01'),
-(9, '13:00', NULL, '2022-01-24 17:14:02', '2022-01-24 17:14:02'),
-(10, '14:00', NULL, '2022-01-24 17:14:04', '2022-01-24 17:14:04'),
-(11, '15:00', NULL, '2022-01-24 17:14:06', '2022-01-24 17:14:06'),
-(12, '16:00', NULL, '2022-01-24 17:14:08', '2022-01-24 17:14:08'),
-(13, '17:00', NULL, '2022-01-24 17:14:10', '2022-01-24 17:14:10'),
-(14, '18:00', NULL, '2022-01-24 17:14:16', '2022-01-24 17:14:16'),
-(15, '19:00', NULL, '2022-01-24 17:14:17', '2022-01-24 17:14:17'),
-(16, '20:00', NULL, '2022-01-24 17:14:19', '2022-01-24 17:14:19'),
-(17, '21:00', NULL, '2022-01-24 17:14:21', '2022-01-24 17:14:21'),
-(18, '22:00', NULL, '2022-01-24 17:14:25', '2022-01-24 17:14:25');
+(1, '05:00', NULL, '2022-02-10 10:25:49', '2022-02-10 10:25:49'),
+(2, '06:00', NULL, '2022-02-10 10:25:54', '2022-02-10 10:25:54'),
+(3, '07:00', NULL, '2022-02-10 10:25:56', '2022-02-10 10:25:56'),
+(4, '08:00', NULL, '2022-02-10 10:25:59', '2022-02-10 10:25:59'),
+(5, '09:00', NULL, '2022-02-10 10:26:00', '2022-02-10 10:26:00'),
+(6, '10:00', NULL, '2022-02-10 10:26:02', '2022-02-10 10:26:02'),
+(7, '11:00', NULL, '2022-02-10 10:26:04', '2022-02-10 10:26:04'),
+(8, '12:00', NULL, '2022-02-10 10:26:06', '2022-02-10 10:26:06'),
+(9, '13:00', NULL, '2022-02-10 10:26:08', '2022-02-10 10:26:08'),
+(10, '14:00', NULL, '2022-02-10 10:26:10', '2022-02-10 10:26:10'),
+(11, '15:00', NULL, '2022-02-10 10:26:12', '2022-02-10 10:26:12'),
+(12, '16:00', NULL, '2022-02-10 10:26:14', '2022-02-10 10:26:14'),
+(13, '17:00', NULL, '2022-02-10 10:26:16', '2022-02-10 10:26:16'),
+(14, '18:00', NULL, '2022-02-10 10:26:18', '2022-02-10 10:26:18'),
+(15, '19:00', NULL, '2022-02-10 10:26:19', '2022-02-10 10:26:19'),
+(16, '20:00', NULL, '2022-02-10 10:26:21', '2022-02-10 10:26:21'),
+(17, '21:00', NULL, '2022-02-10 10:26:23', '2022-02-10 10:26:23'),
+(18, '22:00', NULL, '2022-02-10 10:26:26', '2022-02-10 10:26:26');
 
 -- --------------------------------------------------------
 
@@ -123,6 +123,21 @@ CREATE TABLE `profiles` (
   `profile_id` int(11) NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `ips` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -166,6 +181,12 @@ ALTER TABLE `profiles`
   ADD PRIMARY KEY (`profile_id`);
 
 --
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
@@ -198,6 +219,12 @@ ALTER TABLE `labels`
 --
 ALTER TABLE `profiles`
   MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

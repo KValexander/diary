@@ -19,3 +19,25 @@
 		$return = ($key === NULL) ? $array : $array[$key];
 		return $return;
 	}
+
+	// Add user
+	function add_user() {
+		global $connect, $arr_sql;
+
+		// Delete session
+		unset($_SESSION["user_id"]);
+
+		// Token generation
+		$permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$token = substr(str_shuffle($permitted_chars), 0, 30);
+		
+		// Adding a user
+		$sql = sprintf($arr_sql["add_user"], $_SERVER["REMOTE_ADDR"], $token);
+		if(!$connect->query($sql)) return response(400, $connect->error);
+		
+		// Return data
+		return [
+			"user_id" => $connect->insert_id,
+			"token" => $token
+		];
+	}

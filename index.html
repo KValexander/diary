@@ -52,12 +52,14 @@
 			<div onclick="menu.show_side('labels')" class="point button">Labels</div>
 			<div onclick="menu.show_side('profiles')" class="point button">Profiles</div>
 			<div onclick="menu.show_side('directories')" class="point button">Directories</div>
+			<div onclick="menu.show_side('user')" class="point button">User</div>
 		</div>
 		<!-- End left -->
 
 		<!-- Right -->
 		<div class="side">
 			<div class="point button" id="close">Close</div><br>
+			
 			<!-- Labels -->
 			<div id="labels">
 				<!-- Add label -->
@@ -87,6 +89,7 @@
 				<!-- End actions -->
 			</div>
 			<!-- End labels -->
+
 			<!-- Profiles -->
 			<div id="profiles">
 				<fieldset>
@@ -129,6 +132,7 @@
 				<!-- End actions -->
 			</div>
 			<!-- End profiles -->
+
 			<!-- Directories -->
 			<div id="directories">
 				<!-- Hours -->
@@ -182,6 +186,30 @@
 				<!-- End dates -->
 			</div>
 			<!-- End directories -->
+
+			<!-- User -->
+			<div id="user">
+				<!-- User token -->
+				<fieldset>
+					<legend>Your user token</legend>
+					<h3 id="user_token"></h3>
+				</fieldset>
+				<!-- End user token -->
+				<!-- Change user -->
+				<fieldset>
+					<legend>User</legend>
+					<h3>Change user</h3><hr>
+					<form onsubmit="return user.change()" id="user_form">
+						<div class="part">
+							<input type="text" placeholder="User token" pattern=".{1,40}" required>
+							<button>Change</button>
+						</div>
+					</form>
+				</fieldset>
+				<!-- End change user -->
+			</div>
+			<!-- End user -->
+
 		</div>
 		<!-- End right -->
 

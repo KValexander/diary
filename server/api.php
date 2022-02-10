@@ -6,6 +6,7 @@ include "sql.php";
 
 // Routes
 $routes = [
+	"/user" => "user.php", // user manipulation
 	"/check" => "check.php", // check current date
 	"/refresh" => "refresh.php", // refresh data page
 	"/select" => "select.php", // select current profile
