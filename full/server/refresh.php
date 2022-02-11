@@ -1,31 +1,10 @@
 <?php
-// Current user
-if(isset($_SESSION["user_id"])) {
-	if(!$result = $connect->query(sprintf($arr_sql["get_user"], "user_id", $_SESSION["user_id"])))
-		return response(400, $connect->error);
-
-	if(!$user = $result->fetch_assoc()) $user = add_user();
-
-	$user_id = $user["user_id"];
-	$user_token = $user["token"];
-
-} else {
-	
-	if(!$result = $connect->query(sprintf($arr_sql["get_user"], "ips", $_SERVER["REMOTE_ADDR"])))
-		return response(400, $connect->error);
-
-	if(!$user = $result->fetch_assoc()) $user = add_user();
-
-	$user_id = $user["user_id"];
-	$user_token = $user["token"];
-
-	// Saving sessions
-	$_SESSION["user_id"] = $user_id;
-}
+// Check current user - helpers.php
+$token = check_user();
 
 // Current profile
 if(isset($_SESSION["profile_id"])) {
-	$sql = sprintf($arr_sql["refresh_exists"], $_SESSION["profile_id"]);
+	$sql = sprintf($arr_sql["refresh_exists"], $_SESSION["user_id"], $_SESSION["profile_id"]);
 	$result = $connect->query($sql)->fetch_array()[0];
 	if($result == "1") {
 		$profile_id = $_SESSION["profile_id"];
@@ -44,11 +23,11 @@ if(isset($_SESSION["profile_id"])) {
 
 // SQL queries
 $sql = [
-	"profiles" => $arr_sql["refresh_profiles"],
-	"labels" => $arr_sql["refresh_labels"],
-	"hours" => $arr_sql["refresh_hours"],
-	"dates" => $arr_sql["refresh_dates"],
-]; $sql_cells = sprintf($arr_sql["refresh_cells"], $profile_id);
+	"profiles" => sprintf($arr_sql["refresh_profiles"], $_SESSION["user_id"]),
+	"labels" => sprintf($arr_sql["refresh_labels"], $_SESSION["user_id"]),
+	"hours" => sprintf($arr_sql["refresh_hours"], $_SESSION["user_id"]),
+	"dates" => sprintf($arr_sql["refresh_dates"], $_SESSION["user_id"]),
+]; $sql_cells = sprintf($arr_sql["refresh_cells"], $_SESSION["user_id"], $profile_id);
 
 // Arrays
 $data = [];
@@ -107,5 +86,5 @@ return response(200, [
 	"out" => $out,
 	"select_out" => $select_out,
 	"current_profile" => $current_profile,
-	"user_token" => $user_token,
+	"user_token" => $token,
 ]);

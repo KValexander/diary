@@ -44,10 +44,6 @@ let script = {
 			// Error
 			if(status == 400) return popup.show_message("Error");
 
-			// User token
-			document.getElementById("user_token").innerHTML = data.user_token;
-			user.token = data.user_token;
-
 			// Current profile
 			document.getElementById("current_profile").innerHTML = data.current_profile;
 
@@ -88,27 +84,6 @@ let script = {
 			if(callback != null) callback();
 			cells.init();
 		}, "/refresh");
-	},
-};
-
-// User
-let user = {
-	token: "",
-	// Change user
-	change: function() {
-		let form = document.forms["user_form"];
-		let json = JSON.stringify({"token": form.elements[0].value});
-		script.post(data => {
-			form.elements[0].value = "";
-
-			if(data.status != 422) {
-				script.refresh();
-				popup.show_message("User changed");
-			} else 
-				popup.show_message("This user is not in the database");
-
-		}, "/user?t=change", json);
-		return false;
 	},
 };
 
