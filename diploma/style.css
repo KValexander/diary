@@ -191,6 +191,7 @@ div.app div.bar div.cell {
 	border-bottom: solid 1px black;
 }
 
+
 div.app div.bar div.left {
 	width: 5%;
 	min-height: 100vh;
@@ -225,9 +226,27 @@ div.app div.bar div.right {
 div.app div.bar div.right div.bottom div.cell {
 	background-color: white;
 	overflow: hidden;
+	overflow-y: auto;
 	cursor:  pointer;
 	border-right: dashed 1px #333;
 	border-bottom: dashed 1px #333;
+}
+div.app div.bar div.right div.cell div.label {
+	text-align: center;
+}
+div.app div.bar div.right div.cell div.labels {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	display: none;
+	height: 0px;
+	transition: .2s;
+	overflow: hidden;
+	background-color: rgba(237,163,16, 0.7);
+}
+div.app div.bar div.right div.cell div.labels ul li:hover {
+	text-decoration: underline;
 }
 div.app div.bar div.right div.bottom div.cell:hover {
 	background-color: #d3d3d3;
@@ -276,7 +295,7 @@ div#menu div.side > div { display: none; }
 div#menu div.side > div#close { display: flex; }
 
 /*Popup*/
-div#popup div#message, div#popup div#lb {
+div#popup div#message {
 	height: 0;
 	font-size: 20pt;
 	top: 15px;
@@ -292,20 +311,4 @@ div#popup div#message, div#popup div#lb {
 	background-color: white;
 	border-right-color: #eda310;
 	border-bottom-color:#eda310;
-}
-
-div#popup div#lb {
-	z-index: 98;
-	cursor: auto;
-	background-color: rgba(237,163,16, 0.7);
-	border-radius: 5px;
-	font-size: 1.3em;
-}
-
-div#popup div#lb ul {
-	cursor: pointer;
-}
-
-div#popup div#lb ul li:hover {
-	text-decoration: underline;
 }

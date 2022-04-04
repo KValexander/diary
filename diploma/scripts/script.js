@@ -41,9 +41,6 @@ let script = {
 			let status = data.status, lb = "";
 			data = data.data;
 
-			// Error
-			if(status == 400) return popup.show_message("Error");
-
 			// Current profile
 			document.getElementById("current_profile").innerHTML = data.current_profile;
 
@@ -67,7 +64,6 @@ let script = {
 			data.data.labels.forEach(label => lb += `<li id="l${label[0]}-">${label[1]}</li>`);
 			
 			// Out data
-			document.querySelector("#lb ul").innerHTML = (data.out.labels) ? lb : "";
 			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
 			document.getElementById("out_dates").innerHTML = (data.out.dates) ? data.out.dates : "";
 			document.getElementById("out_hours").innerHTML = (data.out.hours) ? data.out.hours : "";
@@ -76,7 +72,7 @@ let script = {
 			// Out cells
 			data.data.cells.forEach(cell => {
 				elem = document.getElementById(`d${cell[4]}-h${cell[3]}`);
-				elem.title = cell[10]; elem.innerHTML = cell[9];
+				elem.title = cell[10]; elem.querySelector(".label").innerHTML = cell[9];
 				elem.ondblclick = () => cells.delete(`d${cell[4]}-h${cell[3]}`);
 			});
 

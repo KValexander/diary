@@ -58,7 +58,6 @@
 		<!-- Right -->
 		<div class="side">
 			<div class="point button" id="close">Close</div><br>
-			
 			<!-- Labels -->
 			<div id="labels">
 				<!-- Add label -->
@@ -70,7 +69,7 @@
 							<input type="text" placeholder="Label" pattern=".{1,8}" required>
 							<button>Add</button>
 						</div>
-						<textarea placeholder="Description" pattern=".{1,128}"></textarea>
+						<textarea placeholder="Description" pattern="[\w]{1,128}"></textarea>
 					</form>
 				</fieldset>
 				<!-- End add label -->
@@ -88,7 +87,6 @@
 				<!-- End actions -->
 			</div>
 			<!-- End labels -->
-
 			<!-- Profiles -->
 			<div id="profiles">
 				<fieldset>
@@ -111,7 +109,7 @@
 					<h3 id="head_profiles_form">Add profile</h3><hr>
 					<form onsubmit="return profiles.add()" id="profiles_form">
 						<div class="part">
-							<input type="text" placeholder="Profile name" pattern=".{1,64}" required>
+							<input type="text" placeholder="Profile name" pattern="[\w]{1,64}" required>
 							<button>Add</button>
 						</div>
 					</form>
@@ -131,7 +129,6 @@
 				<!-- End actions -->
 			</div>
 			<!-- End profiles -->
-
 			<!-- Directories -->
 			<div id="directories">
 				<!-- Hours -->
@@ -185,7 +182,6 @@
 				<!-- End dates -->
 			</div>
 			<!-- End directories -->
-
 		</div>
 		<!-- End right -->
 
@@ -195,7 +191,6 @@
 	<!-- Popup -->
 	<div id="popup">
 		<div id="message"></div>
-		<div id="lb"><ul></ul></div>
 	</div>
 	<!-- End popup -->
 </body>

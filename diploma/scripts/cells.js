@@ -2,17 +2,56 @@
 let cells = {
 	// Init
 	init: function() {
-		document.querySelectorAll("#out_cells .cell").forEach(elem => elem.addEventListener("click", event => popup.show_lb(event)));
-		document.querySelectorAll("#popup #lb ul li").forEach(elem => {
-			elem.addEventListener("click", () => {
-				let size = document.getElementById("lb").getBoundingClientRect();
-				document.querySelectorAll("#out_cells .cell").forEach(cell => {
-					let cell_size = cell.getBoundingClientRect();
-					if(parseInt(cell_size.x) == size.x && parseInt(cell_size.y + cell_size.height) == size.y)
-						return cells.add(elem.id + cell.id + "-" + elem.innerText);
-				});
-			});
-		});
+		document.querySelectorAll("#out_cells .cell").forEach(elem => elem.addEventListener("click", event => {
+			cells.show_labels(event);
+		}));
+	},
+	// Show labels
+	show_labels: function(e) {
+		let elem = e.target, id = e.id;
+
+		if(elem.localName == "li") return cells.click_li(e);
+		else if(elem.classList.contains('labels'))
+			return cells.hide_labels(elem, e.path[1]);
+		else if(elem.classList.contains('label')) elem = e.path[1];
+
+		let labels = elem.querySelector(".labels");
+		if(labels.style.display == "block")
+			return cells.hide_labels(labels, elem);
+
+		elem.querySelector(".label").style.display = "none";
+		elem.style["align-items"] = "start";
+
+		script.get(data => {
+			labels.style.display = "block";
+			labels.style.padding = "10px 20px";
+			labels.style.height = "auto";
+
+			out = "<ul>";
+			if(data.data.length)
+				data.data.forEach(label => out += `<li id="l${label[0]}-">${label[1]}</li>`);
+			out += "</ul>";
+			
+			labels.innerHTML = out;
+
+		}, "/get?t=label");
+	},
+	// Hide labels
+	hide_labels: function(labels, parent) {
+		parent.style["align-items"] = "center";
+		parent.querySelector(".label").style.display = "block";
+		labels.innerHTML = "";
+		labels.style.display = "none";
+		labels.style.padding = "0px";
+		labels.style.height = "0px";
+	},
+	// Click li
+	click_li: function(e) {
+		let li = e.target, parent = e.path[3];
+		parent.style["align-items"] = "center";
+		cells.hide_labels(e.path[2], parent);
+
+		cells.add(li.id + parent.id + "-" + li.innerText);
 	},
 	// Add cell
 	add: function(id) {
@@ -23,14 +62,10 @@ let cells = {
 			"hour_id":  id[2].slice(1),
 		});
 		script.post(data => {
-			label = data.data;
 			if(data.status == 200)popup.show_message("Cell is updated");
 			else if(data.status == 201)popup.show_message("Cell is added");
-			elem = document.getElementById(id[1]+"-"+id[2]);
-			elem.innerHTML = label.label;
-			elem.title = label.description;
-			elem.ondblclick = () => cells.delete(id[1]+"-"+id[2]);
-			popup.hide_lb();
+			elem = document.querySelector(`#${id[1]}-${id[2]} .label`);
+			elem.innerHTML = id[3];
 		}, "/cell?t=add", json);
 	},
 	// Delete cell
@@ -42,7 +77,7 @@ let cells = {
 		});
 		script.post(data => {
 			popup.show_message("Cell is deleted");
-			document.getElementById(id[0]+"-"+id[1]).innerHTML = "";
+			document.querySelector(`#${id[0]}-${id[1]} .label`).innerHTML = "";
 		}, "/cell?t=delete", json);
 	}
 };

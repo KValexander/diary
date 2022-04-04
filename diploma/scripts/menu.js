@@ -14,7 +14,6 @@ let menu = {
 		mask.style.height = "100vh";
 		mask.onclick = menu.hide;
 		menu.main.style["border-right"] = "solid 5px #333";
-		popup.hide_lb();
 	},
 	hide: function() {
 		menu.main.style.width = "0px";
