@@ -85,6 +85,5 @@ return response(200, [
 	"data" => $data,
 	"out" => $out,
 	"select_out" => $select_out,
-	"current_profile" => $current_profile,
-	"user_token" => $user_token,
+	"current_profile" => $current_profile
 ]);
