@@ -38,8 +38,11 @@ let script = {
 	// Refreshing page data
 	refresh: function(callback=null) {
 		script.get(data => {
-			let status = data.status, lb = "";
+			let status = data.status;
 			data = data.data;
+			
+			// Error
+			if(status == 400) return popup.show_message("Error");
 
 			// Current profile
 			document.getElementById("current_profile").innerHTML = data.current_profile;
@@ -60,8 +63,6 @@ let script = {
 			select = document.querySelectorAll(".select_hours");
 			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Hours</option>`);
 			select.forEach(elem => elem.innerHTML += data.select_out.hours);
-			
-			data.data.labels.forEach(label => lb += `<li id="l${label[0]}-">${label[1]}</li>`);
 			
 			// Out data
 			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";

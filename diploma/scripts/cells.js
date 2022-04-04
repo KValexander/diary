@@ -64,8 +64,10 @@ let cells = {
 		script.post(data => {
 			if(data.status == 200)popup.show_message("Cell is updated");
 			else if(data.status == 201)popup.show_message("Cell is added");
-			elem = document.querySelector(`#${id[1]}-${id[2]} .label`);
-			elem.innerHTML = id[3];
+			elem = document.getElementById(id[1]+"-"+id[2]);
+			elem.querySelector(".label").innerHTML = data.data.label;
+			elem.title = data.data.description;
+			elem.ondblclick = () => cells.delete(`${id[1]}-${id[2]}`);
 		}, "/cell?t=add", json);
 	},
 	// Delete cell

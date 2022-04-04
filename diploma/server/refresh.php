@@ -1,7 +1,7 @@
 <?php
 // Current profile
 if(isset($_SESSION["profile_id"])) {
-	$sql = sprintf("SELECT EXISTS(SELECT * FROM `profiles` WHERE `profile_id`='%s')", $_SESSION["profile_id"]);
+	$sql = sprintf($arr_sql["refresh_exists"], $_SESSION["profile_id"]);
 	$result = $connect->query($sql)->fetch_array()[0];
 	if($result == "1") {
 		$profile_id = $_SESSION["profile_id"];
@@ -20,11 +20,11 @@ if(isset($_SESSION["profile_id"])) {
 
 // SQL queries
 $sql = [
-	"profiles" => "SELECT `profile_id`, `name` FROM `profiles` ORDER BY `profile_id` ASC",
-	"labels" => "SELECT `label_id`, `label`, `description` FROM `labels` ORDER BY `label_id` ASC",
-	"hours" => "SELECT `hour_id`, `hour` FROM `hours` ORDER BY `hour` ASC",
-	"dates" => "SELECT `date_id`, `date` FROM `dates` ORDER BY `date` DESC",
-]; $sql_cells = sprintf("SELECT * FROM `cells` INNER JOIN `labels` USING(`label_id`) WHERE `profile_id`='%s'", $profile_id);
+	"profiles" => $arr_sql["refresh_profiles"],
+	"labels" => $arr_sql["refresh_labels"],
+	"hours" => $arr_sql["refresh_hours"],
+	"dates" => $arr_sql["refresh_dates"],
+]; $sql_cells = sprintf($arr_sql["refresh_cells"], $profile_id);
 
 // Arrays
 $data = [];
@@ -85,5 +85,6 @@ return response(200, [
 	"data" => $data,
 	"out" => $out,
 	"select_out" => $select_out,
-	"current_profile" => $current_profile
+	"current_profile" => $current_profile,
+	"user_token" => $user_token,
 ]);
