@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		if(data.status == 201) popup.show_message("Today's date added", 5000)
 		// INIT
 		script.refresh(() => {
+			labels.init();
 			profiles.init();
 			hours.init();
 			dates.init();
@@ -51,9 +52,9 @@ let script = {
 			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Profiles</option>`);
 			select.forEach(elem => elem.innerHTML += data.select_out.profiles);
 
-			// select = document.querySelectorAll(".select_labels");
-			// select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Labels</option>`);
-			// select.forEach(elem => elem.innerHTML += data.select_out.labels);
+			select = document.querySelectorAll(".select_labels");
+			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Labels</option>`);
+			select.forEach(elem => elem.innerHTML += data.select_out.labels);
 
 			select = document.querySelectorAll(".select_dates");
 			select.forEach(elem => elem.innerHTML = `<option disabled selected value="null">Dates</option>`);
@@ -64,7 +65,7 @@ let script = {
 			select.forEach(elem => elem.innerHTML += data.select_out.hours);
 			
 			// Out data
-			// document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
+			document.getElementById("out_labels").innerHTML = (data.out.labels) ? data.out.labels : "<li>No labels</li>";
 			document.getElementById("out_dates").innerHTML = (data.out.dates) ? data.out.dates : "";
 			document.getElementById("out_hours").innerHTML = (data.out.hours) ? data.out.hours : "";
 			document.getElementById("out_cells").innerHTML = (data.out.cells) ? data.out.cells : "";
@@ -72,9 +73,8 @@ let script = {
 			// Out cells
 			data.data.cells.forEach(cell => {
 				elem = document.getElementById(`d${cell[4]}-h${cell[3]}`);
-				elem.querySelector(".note").innerHTML = "N";
-				elem.querySelector("textarea").innerHTML = cell[6];
-				elem.oncontextmenu = () => cells.delete(`d${cell[4]}-h${cell[3]}`);
+				elem.title = cell[10]; elem.querySelector(".label").innerHTML = cell[9];
+				elem.ondblclick = () => cells.delete(`d${cell[4]}-h${cell[3]}`);
 			});
 
 			// Callback if necessary
@@ -84,6 +84,87 @@ let script = {
 	},
 };
 
+// Labels
+let labels = {
+	init: function() {
+		labels.form = document.forms["labels_form"];
+		labels.head = document.getElementById("head_labels_form");
+	},
+	// Add label
+	add: function() {
+		let json = JSON.stringify({
+			"label": labels.form.elements[0].value,
+			"description": labels.form.elements[2].value,
+		});
+		script.post(data => {
+			popup.show_message("Label added");
+			labels.form.elements[0].value = "";
+			labels.form.elements[2].value = "";
+			script.refresh();
+		}, "/add?t=label", json);
+		return false;
+	},
+	// Actions label
+	actions: function(event) {
+		event.preventDefault();
+
+		let id = event.target.elements[0].value;
+		if(id == "null") return false;
+		let type = event.submitter.value;
+
+		// Delete
+		if(type == "delete") {
+			let check = confirm("Are you sure you want to delete this entry?");
+			if(check) {
+				script.get(data => {
+					popup.show_message("Label deleted");
+					script.refresh();
+				}, "/delete?t=label&id="+id);
+			}
+		}
+
+		// Update
+		else if(type == "update") {
+			labels.form.onsubmit = () => { return labels.update(labels.form) };
+			
+			script.get(data => {
+				labels.form.elements[0].value = data.data.label;
+				labels.form.elements[1].value = data.data.label_id;
+				labels.form.elements[2].value = data.data.description;
+			}, "/get?t=label&id="+id);
+
+			labels.head.innerHTML = "Update label";
+			labels.form.elements[1].innerHTML = "Update";
+		}
+
+		return false;
+	},
+	// Update label
+	update: function(form) {
+		let json = JSON.stringify({
+			"id": form.elements[1].value,
+			"label": form.elements[0].value,
+			"description": form.elements[2].value,
+		});
+
+		script.post(data => {
+			popup.show_message("Label updated");
+
+			form.onsubmit = () => { return labels.add() };
+
+			form.elements[0].value = "";
+			form.elements[1].value = "";
+			form.elements[2].value = "";
+
+			labels.head.innerHTML = "Add label";
+			form.elements[1].innerHTML = "Add";
+
+			script.refresh();
+		}, "/update?t=label", json);
+
+		return false;
+	},
+};
 
 // Profiles
 let profiles = {

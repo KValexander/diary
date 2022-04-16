@@ -21,7 +21,7 @@ if(isset($_SESSION["profile_id"])) {
 // SQL queries
 $sql = [
 	"profiles" => $arr_sql["refresh_profiles"],
-	// "labels" => $arr_sql["refresh_labels"],
+	"labels" => $arr_sql["refresh_labels"],
 	"hours" => $arr_sql["refresh_hours"],
 	"dates" => $arr_sql["refresh_dates"],
 ]; $sql_cells = sprintf($arr_sql["refresh_cells"], $profile_id);
@@ -46,10 +46,10 @@ foreach($data as $key => $value)
 $data["cells"] = $connect->query($sql_cells)->fetch_all();
 
 // Out labels
-// foreach($data["labels"] as $val) {
-// 	$description = ($val[2] == "") ? "" : "- ". $val[2];
-// 	$out["labels"] .= sprintf('<li>%s %s</li>', $val[1], $description);
-// }
+foreach($data["labels"] as $val) {
+	$description = ($val[2] == "") ? "" : "- ". $val[2];
+	$out["labels"] .= sprintf('<li>%s %s</li>', $val[1], $description);
+}
 
 // Out hours
 foreach($data["hours"] as $val)
@@ -74,8 +74,8 @@ for($i = 0; $i < count($data["dates"]); $i++) {
 	$out["cells"] .= '<div class="row">';
 	for($j = 0; $j < count($data["hours"]); $j++)
 		$out["cells"] .= '<div class="cell" id="d'.$data["dates"][$i][0].'-h'.$data["hours"][$j][0].'">
-			<textarea placeholder="Ваша заметка"></textarea>
-			<div class="note"></div>
+			<div class="label"></div>
+			<div class="labels"></div>
 		</div>';
 	$out["cells"] .= '</div>';
 }

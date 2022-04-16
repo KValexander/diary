@@ -224,22 +224,12 @@ div.app div.bar div.right {
 }
 
 div.app div.bar div.right div.bottom div.cell {
-	position: relative;
 	background-color: white;
-	/*overflow: hidden;*/
-	/*overflow-y: auto;*/
+	overflow: hidden;
+	overflow-y: auto;
 	cursor:  pointer;
 	border-right: dashed 1px #333;
 	border-bottom: dashed 1px #333;
-}
-div.app div.bar div.right div.cell textarea {
-	display:  none;
-	border:  solid 2px black;
-	position: absolute;
-	width: 200px;
-	z-index: 999;
-	top: 15px;
-	left: 15px;
 }
 div.app div.bar div.right div.cell div.label {
 	text-align: center;

@@ -6,7 +6,7 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 	$profile_id = (isset($_SESSION["profile_id"])) ? $_SESSION["profile_id"] : 0;
 	$hour_id = request("hour_id");
 	$date_id = request("date_id");
-	$note = request("note");
+	$label_id = request("label_id");
 
 	// Exists
 	$sql = sprintf($arr_sql["cell_id"], $profile_id, $hour_id, $date_id);
@@ -17,16 +17,16 @@ if(isset($_GET["t"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 
 	switch($type) {
 		case "add":
-			$sql = sprintf($arr_sql["cell_add_note"], $profile_id, $hour_id, $date_id, $note);
+			$sql = sprintf($arr_sql["cell_add"], $profile_id, $hour_id, $date_id, $label_id);
 			$status = 201;
 		break;
 		case "update":
-			$sql = sprintf($arr_sql["cell_update"], $profile_id, $hour_id, $date_id, $note, $cell_id);
+			$sql = sprintf($arr_sql["cell_update"], $profile_id, $hour_id, $date_id, $label_id, $cell_id);
 			$status = 200;
 		break;
 		case "delete":
 			$sql = sprintf($arr_sql["cell_delete"], $cell_id);
-			$status = 202;
+			$status = 200;
 		break;
 		default: return response(400); break;
 	}

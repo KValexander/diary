@@ -3,71 +3,56 @@ let cells = {
 	// Init
 	init: function() {
 		document.querySelectorAll("#out_cells .cell").forEach(elem => elem.addEventListener("click", event => {
-			cells.show_labels(event);
+			cells.show_note(event);
 		}));
 	},
-	// Show labels
-	show_labels: function(e) {
+	// Show note
+	show_note: function(e) {
 		let elem = e.target, id = e.id;
 
-		if(elem.localName == "li") return cells.click_li(e);
-		else if(elem.classList.contains('labels'))
-			return cells.hide_labels(elem, e.path[1]);
-		else if(elem.classList.contains('label')) elem = e.path[1];
+		if(elem.localName == "textarea") return;
+		else if(elem.classList.contains("note"))
+			elem = elem.parentNode
+		let textarea = elem.querySelector("textarea");
+		// console.log(elem);
 
-		let labels = elem.querySelector(".labels");
-		if(labels.style.display == "block")
-			return cells.hide_labels(labels, elem);
+		if(elem.classList.contains("active")) {
+			elem.classList.remove("active");
+			elem.style["background-color"] = "";
+			textarea.style.display = "none";
+			cells.add(elem.id, textarea.value);
+		} else {
+			cells.hide_note();
+			elem.classList.add("active");
+			elem.style["background-color"] = "#ccc";
+			textarea.style.display = "block";
+		}
 
-		elem.querySelector(".label").style.display = "none";
-		elem.style["align-items"] = "start";
-
-		script.get(data => {
-			labels.style.display = "block";
-			labels.style.padding = "10px 20px";
-			labels.style.height = "auto";
-
-			out = "<ul>";
-			if(data.data.length)
-				data.data.forEach(label => out += `<li id="l${label[0]}-">${label[1]}</li>`);
-			out += "</ul>";
-			
-			labels.innerHTML = out;
-
-		}, "/get?t=label");
 	},
-	// Hide labels
-	hide_labels: function(labels, parent) {
-		parent.style["align-items"] = "center";
-		parent.querySelector(".label").style.display = "block";
-		labels.innerHTML = "";
-		labels.style.display = "none";
-		labels.style.padding = "0px";
-		labels.style.height = "0px";
+	// Hide note
+	hide_note: function() {
+		document.querySelectorAll("div.app div.bar div.right div.bottom div.cell").forEach(el => {
+			el.classList.remove("active");
+			el.querySelector("textarea").style.display = "none";
+			el.style["background-color"] = "";
+		});
 	},
-	// Click li
-	click_li: function(e) {
-		let li = e.target, parent = e.path[3];
-		parent.style["align-items"] = "center";
-		cells.hide_labels(e.path[2], parent);
-
-		cells.add(li.id + parent.id + "-" + li.innerText);
-	},
-	// Add cell
-	add: function(id) {
+	// Add note
+	add: function(id, note) {
+		if(!note) return;
 		id = id.split("-");
 		json = JSON.stringify({
-			"label_id":  id[0].slice(1),
-			"date_id":  id[1].slice(1),
-			"hour_id":  id[2].slice(1),
+			"date_id":  id[0].slice(1),
+			"hour_id":  id[1].slice(1),
+			"note":  note,
 		});
 		script.post(data => {
-			if(data.status == 200)popup.show_message("Cell is updated");
-			else if(data.status == 201)popup.show_message("Cell is added");
-			elem = document.getElementById(id[1]+"-"+id[2]);
-			elem.querySelector(".label").innerHTML = data.data.label;
-			elem.title = data.data.description;
-			elem.ondblclick = () => cells.delete(`${id[1]}-${id[2]}`);
+			if(data.status == 200) popup.show_message("Cell is updated");
+			else if(data.status == 201) popup.show_message("Cell is added");
+			elem = document.getElementById(id[0]+"-"+id[1]);
+			elem.querySelector(".note").innerHTML = "N";
+			elem.querySelector("textarea").value = note;
+			elem.oncontextmenu = () => cells.delete(`${id[0]}-${id[1]}`);
 		}, "/cell?t=add", json);
 	},
 	// Delete cell
@@ -79,7 +64,10 @@ let cells = {
 		});
 		script.post(data => {
 			popup.show_message("Cell is deleted");
-			document.querySelector(`#${id[0]}-${id[1]} .label`).innerHTML = "";
+			cells.hide_note();
+			document.getElementById(id[0]+"-"+id[1]).oncontextmenu = null;
+			document.querySelector(`#${id[0]}-${id[1]} .note`).innerHTML = "";
+			document.querySelector(`#${id[0]}-${id[1]} textarea`).value = "";
 		}, "/cell?t=delete", json);
 	}
 };

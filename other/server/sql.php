@@ -7,7 +7,7 @@
 		"refresh_labels" => "SELECT `label_id`, `label`, `description` FROM `labels` ORDER BY `label_id` ASC",
 		"refresh_hours" => "SELECT `hour_id`, `hour` FROM `hours` ORDER BY `hour` ASC",
 		"refresh_dates" => "SELECT `date_id`, `date` FROM `dates` ORDER BY `date` DESC",
-		"refresh_cells" => "SELECT * FROM `cells` LEFT JOIN `labels` USING(`label_id`) WHERE `profile_id`='%s'",
+		"refresh_cells" => "SELECT * FROM `cells` INNER JOIN `labels` USING(`label_id`) WHERE `profile_id`='%s'",
 		// check.php
 		"check_exists" => "SELECT EXISTS(SELECT * FROM `dates` WHERE `date`='%s')",
 		"check_insert" => "INSERT INTO `dates`(`date`) VALUES('%s')",
@@ -36,8 +36,7 @@
 		// cell.php
 		"cell_id" => "SELECT `cell_id` FROM `cells` WHERE `profile_id`='%s' AND `hour_id`='%s' AND `date_id`='%s'",
 		"cell_add" => "INSERT INTO `cells`(`profile_id`, `hour_id`, `date_id`, `label_id`) VALUES('%s', '%s', '%s', '%s')",
-		"cell_add_note" => "INSERT INTO `cells`(`profile_id`, `hour_id`, `date_id`, `label_id`, `note`) VALUES('%s', '%s', '%s', 0, '%s')",
-		"cell_update" => "UPDATE `cells` SET `profile_id`='%s',`hour_id`='%s',`date_id`='%s',`note`='%s' WHERE `cell_id`='%s'",
+		"cell_update" => "UPDATE `cells` SET `profile_id`='%s',`hour_id`='%s',`date_id`='%s',`label_id`='%s' WHERE `cell_id`='%s'",
 		"cell_delete" => "DELETE FROM `cells` WHERE `cell_id`='%s'",
 		"cell_label" => "SELECT `label`, `description` FROM `labels` WHERE `label_id`='%s'",
 	];

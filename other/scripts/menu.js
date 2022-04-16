@@ -9,7 +9,6 @@ let menu = {
 	},
 	// Show and Hide main menu
 	show: function() {
-		cells.hide_note();
 		menu.main.style.width = "400px";
 		menu.main.style.padding = "20px";
 		mask.style.height = "100vh";
